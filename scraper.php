@@ -2,28 +2,31 @@
 
 require 'vendor/autoload.php';
 
-use GuzzleHttp\Client;
-use Symfony\Component\DomCrawler\Crawler;
+use App\Scraper;
 
-// Create a new HTTP client
-$client = new Client();
+// Create a new Scraper instance
+$scraper = new Scraper();
 
-// Define the URL you want to scrape
+// Define the URL to scrape
 $url = 'https://example.com';
 
-// Make a GET request to fetch the page content
-$response = $client->request('GET', $url);
-$html = $response->getBody()->getContents();
+// Fetch the page content
+$scraper->fetchPage($url);
 
-// Create a new Crawler instance and pass the HTML content
-$crawler = new Crawler($html);
+// Get the page title
+$title = $scraper->getTitle();
+echo "Page Title: " . $title . PHP_EOL;
 
-// Example: Extract all the links from the page
-$links = $crawler->filter('a')->each(function (Crawler $node) {
-    return $node->attr('href');
-});
-
-// Print out all the extracted links
+// Get all links from the page
+$links = $scraper->getLinks();
+echo "Links: " . PHP_EOL;
 foreach ($links as $link) {
     echo $link . PHP_EOL;
+}
+
+// Get content of a specific selector (e.g., paragraph tags)
+$paragraphs = $scraper->getContent('p');
+echo "Paragraphs: " . PHP_EOL;
+foreach ($paragraphs as $paragraph) {
+    echo $paragraph . PHP_EOL;
 }
