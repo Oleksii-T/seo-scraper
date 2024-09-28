@@ -3,6 +3,17 @@
 require 'vendor/autoload.php';
 
 use App\Scraper;
+use App\Services\CacheService;
+
+$cache = new CacheService();
+
+$randNumber = rand(0, 100);
+
+$d = $cache->get('rand-number');
+
+echo ($d);
+
+return;
 
 // Create a new Scraper instance
 $scraper = new Scraper();
