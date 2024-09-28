@@ -1,0 +1,14 @@
+{
+    "name": "oleksii-t/seo-scraper",
+    "description": "Simple scraper for SEO needs",
+    "authors": [
+        {
+            "name": "Oleksii-T"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "symfony/dom-crawler": "^7.1",
+        "symfony/css-selector": "^7.1"
+    }
+}
