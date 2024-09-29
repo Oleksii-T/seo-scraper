@@ -3,14 +3,15 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
-use App\Services\CacheService;
+use App\Services\Cache;
+use App\Services\Logger;
 
 class PageFetchService
 {
-    public static function get($uri)
+    public static function get($uri, $usingBrowser=false)
     {
         // init cache
-        $cache = new CacheService();
+        $cache = new Cache();
         
         // get the cached html
         $cacheHtml = $cache->get($uri);
@@ -20,16 +21,32 @@ class PageFetchService
             return $cacheHtml;
         }
 
+        if ($usingBrowser) {
+            $html = self::browserGet($uri);
+        } else {
+            $html = self::simpleGet($uri);
+        }
+
+        $cache->put($uri, $html);
+
+        return $html;
+    }
+
+    private static function simpleGet($uri)
+    {
         // Make a GET request to the provided URL
         $client = new Client();
         $response = $client->request('GET', $uri);
         
         // Get the body content of the response
-        $html = $response->getBody()->getContents();
+        return $response->getBody()->getContents();
+    }
 
-        // cache the html
-        $cache->put($uri, $html);
+    private static function browserGet($uri)
+    {
+        $command = escapeshellcmd("node fetchContent.js " . escapeshellarg($uri));
+        $output = shell_exec($command);
 
-        return $html;
+        return $output; // This is the fully rendered HTML
     }
 }

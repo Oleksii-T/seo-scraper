@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class CacheService
+class Cache
 {
     private $cacheDir = __DIR__ . '/../../cache';
     private $cacheDuration = 3600;

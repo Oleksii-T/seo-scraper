@@ -5,6 +5,7 @@ namespace App;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Services\PageFetchService;
 use App\Services\CSVGenerator;
+use App\Services\Logger;
 
 class Scraper
 {
@@ -13,7 +14,7 @@ class Scraper
 
     public function __construct($uri)
     {
-        $this->baseHtml = PageFetchService::get($uri);
+        $this->baseHtml = PageFetchService::get($uri, true);
         $this->crawler = new Crawler($this->baseHtml);
     }
 
@@ -34,7 +35,7 @@ class Scraper
                 $tableCellData[] = $cell->nodeValue;
             }
 
-            // $this->log($tableCellData);
+            // Logger::info($tableCellData);
 
             $allData[] = $tableCellData;
         }
@@ -45,19 +46,9 @@ class Scraper
             'Membership',
         ];
 
-        // $this->log($allData);
+        // Logger::info($allData);
 
         $csvGenerator = new CSVGenerator;
         $csvGenerator->generate($allData, $headers, 'members.csv');
-    }
-
-    public function log($text)
-    {
-        if (!is_string($text)) {
-            $text = json_encode($text);
-        }
-
-        echo ($text);
-        echo ("\r\n");
     }
 }
