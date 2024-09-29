@@ -25,10 +25,10 @@ class PageFetchService
         }
 
         if ($usingBrowser) {
-            Logger::info('  load HTML via simple HTTP GET...');
+            Logger::info('  load HTML via headless browser...');
             $html = self::browserGet($uri);
         } else {
-            Logger::info('  load HTML via headless browser...');
+            Logger::info('  load HTML via simple HTTP GET...');
             $html = self::simpleGet($uri);
         }
         
