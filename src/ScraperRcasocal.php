@@ -7,23 +7,19 @@ use App\Services\PageFetchService;
 use App\Services\CSVGenerator;
 use App\Services\Logger;
 
-class Scraper
+class ScraperRcasocal
 {
-    private Crawler $crawler;
-    private string $baseHtml;
-
-    public function __construct($uri)
-    {
-        $this->baseHtml = PageFetchService::get($uri, true);
-        $this->crawler = new Crawler($this->baseHtml);
-    }
-
     public function run()
     {
+        Logger::info('Start ScraperRcasocal...');
+        $baseUrl = 'https://rcasocal.wildapricot.org/page-7745';
+        $baseHtml = PageFetchService::get($baseUrl, true);
+        $crawler = new Crawler($baseHtml);
+
+        Logger::info(' Crawler inited');
+
         $cssSelectorOfTableRow = '#membersTable tbody tr';
-
-        $nodes = $this->crawler->filter($cssSelectorOfTableRow);
-
+        $nodes = $crawler->filter($cssSelectorOfTableRow);
         $allData = [];
 
         foreach ($nodes as $node) {
@@ -43,6 +39,8 @@ class Scraper
             'Organization',
             'Membership',
         ];
+
+        Logger::info(' Scrapping ended');
 
         $csvGenerator = new CSVGenerator;
         $csvGenerator->generate($allData, $headers, 'members.csv');

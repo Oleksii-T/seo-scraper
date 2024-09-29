@@ -10,24 +10,31 @@ class PageFetchService
 {
     public static function get($uri, $usingBrowser=false)
     {
+        Logger::info(' Get HTML from url ' . $uri);
+
         // init cache
         $cache = new Cache();
         
         // get the cached html
         $cacheHtml = $cache->get($uri);
         
-        // return html from the cache if it is exists
+        // return HTML from the cache if it is exists
         if ($cacheHtml) {
+            Logger::info('  found in cache');
             return $cacheHtml;
         }
 
         if ($usingBrowser) {
+            Logger::info('  load HTML via simple HTTP GET...');
             $html = self::browserGet($uri);
         } else {
+            Logger::info('  load HTML via headless browser...');
             $html = self::simpleGet($uri);
         }
-
+        
         $cache->put($uri, $html);
+        
+        Logger::info('  HTML loaded');
 
         return $html;
     }

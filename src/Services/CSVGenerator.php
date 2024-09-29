@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Services\Logger;
+
 class CSVGenerator
 {
     private $delimiter;
@@ -23,9 +25,9 @@ class CSVGenerator
      */
     public function generate(array $data, array $headers, string $filename)
     {
-        $filename = __DIR__ . "/../../outputs/$filename";
+        Logger::info(' Start CSV generation...');
 
-        echo $filename;
+        $filename = __DIR__ . "/../../outputs/$filename";
 
         // Open file for writing
         $file = fopen($filename, 'w');
@@ -42,6 +44,8 @@ class CSVGenerator
         foreach ($data as $row) {
             fputcsv($file, $row, $this->delimiter, $this->enclosure);
         }
+
+        Logger::info('  CSV written to ' . $filename);
 
         // Close the file
         fclose($file);
