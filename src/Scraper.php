@@ -35,8 +35,6 @@ class Scraper
                 $tableCellData[] = $cell->nodeValue;
             }
 
-            // Logger::info($tableCellData);
-
             $allData[] = $tableCellData;
         }
 
@@ -45,8 +43,6 @@ class Scraper
             'Organization',
             'Membership',
         ];
-
-        // Logger::info($allData);
 
         $csvGenerator = new CSVGenerator;
         $csvGenerator->generate($allData, $headers, 'members.csv');
