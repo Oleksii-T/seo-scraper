@@ -32,7 +32,7 @@ class CSVGenerator
 
         // Check if file is opened successfully
         if ($file === false) {
-            throw new Exception("Unable to open file for writing.");
+            throw new \Exception("Unable to open file for writing.");
         }
 
         // add headers to data array
