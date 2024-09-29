@@ -8,7 +8,7 @@ use App\Services\Logger;
 
 class PageFetchService
 {
-    public static function get($uri, $usingBrowser=false)
+    public static function get(string $uri, bool $usingBrowser)
     {
         Logger::info(' Get HTML from url ' . $uri);
 
